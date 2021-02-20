@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,7 +25,8 @@ public class Controller implements Initializable {
     Repository r = new Repository();
     Customer customer = null;
     List<Button> buttons = new ArrayList<>();
-    int chosenButton = 0;
+    int chosenButtonId = 0;
+    Button chosenButton = null;
 
     @FXML
     private Pane LogInPane;
@@ -93,7 +93,8 @@ public class Controller implements Initializable {
 
     @FXML
     void addToCartAction(ActionEvent event) {
-        String answer = r.addToCart(customer.id, chosenButton, 1500);
+        chosenButton.setDisable(false);
+        String answer = r.addToCart(customer.id, chosenButtonId, 1500);
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         addedToCartText.setText(answer);
         productAddedToCartPane.setVisible(true);
@@ -160,7 +161,8 @@ public class Controller implements Initializable {
             for(Button b : buttons){
                if(e.getSource()== b){
                    b.setDisable(true);
-                   chosenButton = Integer.parseInt(b.getId());
+                   chosenButton = b;
+                   chosenButtonId = Integer.parseInt(b.getId());
                }
            }
         }
