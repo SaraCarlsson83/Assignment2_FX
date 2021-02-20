@@ -3,11 +3,11 @@ package sample;
 public class Name {
 
     protected int id;
-    protected String labelName;
+    protected String shoeName;
 
     public Name(int id, String labelName) {
         this.id = id;
-        this.labelName = labelName;
+        this.shoeName = labelName;
     }
 
     public int getId() {
@@ -18,11 +18,11 @@ public class Name {
         this.id = id;
     }
 
-    public String getLabelName() {
-        return labelName;
+    public String getShoeName() {
+        return shoeName;
     }
 
     public void setLabelName(String labelName) {
-        this.labelName = labelName;
+        this.shoeName = labelName;
     }
 }
