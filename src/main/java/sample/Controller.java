@@ -100,7 +100,7 @@ public class Controller implements Initializable {
         yourCartPane.setVisible(true);
     }
 
-    @FXML
+   /* @FXML
     void logInAction(ActionEvent event) {
         wrongUserName.setVisible(false);
         wrongPassword.setVisible(false);
@@ -119,7 +119,7 @@ public class Controller implements Initializable {
             firtsLastNameText.setText(customer.firstName + " " + customer.lastName);
 
         }
-    }
+    }*/
 
     @FXML
     public void goBackAction(ActionEvent actionEvent) {
