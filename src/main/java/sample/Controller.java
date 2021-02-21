@@ -1,27 +1,42 @@
 package sample;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
+
     Repository r = new Repository();
     Customer customer = null;
+    List<Button> shoeButtons = new ArrayList<>();
+    int chosenButtonId = 0;
+    Button chosenButton = null;
+
+    @FXML
+    public Button seeRateBtn;
+
+    @FXML
+    public Button latestOrderBtn;
+
+    @FXML
+    public Button newOrderBtn;
 
     @FXML
     private Pane LogInPane;
@@ -47,21 +62,6 @@ public class Controller implements Initializable {
     @FXML
     private Text firtsLastNameText;
 
-    /*@FXML
-    private ChoiceBox<String> categoryBox;
-
-    @FXML
-    private ChoiceBox<String> labelBox;
-
-    @FXML
-    private ChoiceBox<String> colorBox;
-
-    @FXML
-    private ChoiceBox<String> sizeBox;
-
-    @FXML
-    private Button searchButton;*/
-
     @FXML
     private Pane yourCartPane;
 
@@ -72,7 +72,7 @@ public class Controller implements Initializable {
     private Pane availableShoesPane;
 
     @FXML
-    private HBox showAvShoesBox;
+    private FlowPane showAvShoesBox;
 
     @FXML
     private Button addToCartButton;
@@ -86,18 +86,12 @@ public class Controller implements Initializable {
     @FXML
     private ImageView cartImage;
 
-    @FXML
-    void addToCartAction(ActionEvent event) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        productAddedToCartPane.setVisible(true);
-        pause.setOnFinished(e -> productAddedToCartPane.setVisible(false));
-        pause.play();
-    }
-
-    @FXML
-    void cartAction(MouseEvent event) {
-        availableShoesPane.setVisible(false);
-        yourCartPane.setVisible(true);
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image cartIm = new Image("cartImage.png");
+        cartImage.setImage(cartIm);
+        addToCartButton.setDisable(true);
+        seeRateBtn.setDisable(true);
     }
 
    /* @FXML
@@ -106,7 +100,6 @@ public class Controller implements Initializable {
         wrongPassword.setVisible(false);
         boolean username = r.checkUsername(userNameText.getText());
         boolean password = r.checkPassword(PasswordText.getText(), userNameText.getText());
-        System.out.println(username + " " + password);
 
         if(!username)
             wrongUserName.setVisible(true);
@@ -114,12 +107,28 @@ public class Controller implements Initializable {
             wrongPassword.setVisible(true);
         else {
             customer = r.getCustomer(userNameText.getText());
+            firtsLastNameText.setText(customer.firstName + " " + customer.lastName);
+            List<Shoe> shoeList = r.getShoeList();
+            addShoesToView(shoeList);
             LogInPane.setVisible(false);
             chooseShoesPane.setVisible(true);
-            firtsLastNameText.setText(customer.firstName + " " + customer.lastName);
-
         }
     }*/
+
+    @FXML
+    void addToCartAction(ActionEvent event) {
+        chosenButton.setDisable(false);
+        addedToCartText.setText("Vill du lägga till varan i din senaste order eller i en ny order?");
+        latestOrderBtn.setVisible(true);
+        newOrderBtn.setVisible(true);
+        productAddedToCartPane.setVisible(true);
+    }
+
+    @FXML
+    void cartAction(MouseEvent event) {
+        availableShoesPane.setVisible(false);
+        yourCartPane.setVisible(true);
+    }
 
     @FXML
     public void goBackAction(ActionEvent actionEvent) {
@@ -127,56 +136,67 @@ public class Controller implements Initializable {
         yourCartPane.setVisible(false);
     }
 
-
-    /*@FXML
-    void searchAction(ActionEvent event) {
-       *//* String category = categoryBox.getValue();
-        String Size = sizeBox.getValue();
-        String label = labelBox.getValue();
-        String color = colorBox.getValue();*//*
-
-        yourCartPane.setVisible(false);
-        availableShoesPane.setVisible(true);
-    }
-*/
+    @FXML
     public void addRateAction(ActionEvent actionEvent) {
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // setChoiseBoxes();
-        Image cartIm = new Image("cartImage.png");
-        cartImage.setImage(cartIm);
+    @FXML
+    public void latestOrderAction(ActionEvent actionEvent) {
+        latestOrderBtn.setVisible(false);
+        newOrderBtn.setVisible(false);
+        int orderId = r.getLatestOrder(customer.userName);
+        setOrderId(orderId);
     }
+
+    @FXML
+    public void newOrderAction(ActionEvent actionEvent) {
+        latestOrderBtn.setVisible(false);
+        newOrderBtn.setVisible(false);
+        setOrderId(0);
+    }
+
+    @FXML
+    public void seeRateAction(ActionEvent actionEvent) {
+    }
+
+    EventHandler<MouseEvent> eventHandler = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent e) {
+            shoeButtons.forEach(i -> i.setDisable(false));
+            addToCartButton.setDisable(false);
+            seeRateBtn.setDisable(false);
+            System.out.println(e.getSource());
+            for (Button b : shoeButtons) {
+                if (e.getSource() == b) {
+                    b.setDisable(true);
+                    chosenButton = b;
+                    chosenButtonId = Integer.parseInt(b.getId());
+                }
+            }
+        }
+    };
 
     public void addShoesToView(List<Shoe> shoeList){
         for (Shoe s: shoeList) {
-            TextField t = new TextField();
-            //t.appendText(s.);
-            //Platform.runLater(() -> {
-                showAvShoesBox.getChildren().add(t);
-            //});
-
+            Button b = new Button();
+            b.setId(String.valueOf(s.id));
+            b.setText(s.labelId.getLabelName() + " \n" + s.nameId.getShoeName() + "\n" +
+                    s.priceId.getValue() + "kr\n" + "Storlek " + s.sizeId.getSizeName()+ "\n" );
+            b.setPrefSize(100,85);
+            b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+            shoeButtons.add(b);
+            showAvShoesBox.getChildren().add(b);
         }
     }
 
-
-
-
-    /*public void setChoiseBoxes(){
-        categoryBox.getItems().add("Alla");
-        categoryBox.getItems().addAll(r.getCatList());
-        categoryBox.setValue("Alla");
-        sizeBox.getItems().add("Alla");
-        sizeBox.getItems().addAll(r.getSizeList());
-        sizeBox.setValue("Alla");
-        labelBox.getItems().add("Alla");
-        labelBox.getItems().addAll(r.getLabelList());
-        labelBox.setValue("Alla");
-        colorBox.getItems().add("Alla");
-        colorBox.getItems().addAll(r.getColorList());
-        colorBox.setValue("Alla");
-    }*/
+    public void setOrderId (int orderId){
+        String answer = r.addToCart(customer.id, chosenButtonId, orderId);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        addedToCartText.setText(answer);
+        productAddedToCartPane.setVisible(true);
+        pause.setOnFinished(e -> productAddedToCartPane.setVisible(false));
+        pause.play();
+    }
 }
 
