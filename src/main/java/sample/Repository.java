@@ -63,53 +63,15 @@ public class Repository {
         }
 
     }
-/*
 
-    public List<String> getStringLists(String query, String column){
-        List<String> tempList = new ArrayList<>();
-        Connection con = connectToDataBase();
-
-        try(Statement stmt = con.createStatement();){
-
-            ResultSet rs = stmt.executeQuery(query);
-
-            while(rs.next()){
-                String temp = rs.getString(column);
-                tempList.add(temp);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return tempList;
-    }
-*/
-/*
-
-    public List<String> getCatList(){
-        return getStringLists("select cat_name from category;", "cat_name");
-    }
-
-    public List<String> getSizeList(){
-        return getStringLists("select Size_name from size;", "Size_name");
-    }
-
-    public List<String> getLabelList(){
-        return getStringLists("select label_name from label;", "label_name");
-    }
-
-    public List<String> getColorList(){
-        return getStringLists("select col_name from color;", "col_name");
-    }
-*/
 
     public boolean checkUsername(String name){
         boolean temp = false;
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                         p.getProperty("password"));
-            Statement stmt = con.createStatement();){
+            PreparedStatement stmt = con.prepareStatement("select user_name from customer");){
 
-            ResultSet rs = stmt.executeQuery("select user_name from customer");
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 String tempName = rs.getString("user_name");
                 if ( tempName.equalsIgnoreCase(name))
@@ -127,9 +89,9 @@ public class Repository {
         boolean temp = false;
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                 p.getProperty("password"));
-            Statement stmt = con.createStatement();){
-
-            ResultSet rs = stmt.executeQuery("select * from customer where user_name = '" + name + "'");
+            PreparedStatement stmt = con.prepareStatement("select * from customer where user_name = ?")){
+            stmt.setString(1,name);
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 String tempPassword = rs.getString("Password");
                 System.out.println(tempPassword);
@@ -142,8 +104,6 @@ public class Repository {
             e.printStackTrace();
         }
         return temp;
-
-
     }
 
     public Community getCommunity(int id){
@@ -206,7 +166,29 @@ public class Repository {
         return temp;
     }
 
+    public int getLatestOrder(String userName){
+        int orderIdTemp = 0;
+        try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
+                p.getProperty("password"));
+            PreparedStatement stmt = con.prepareStatement(
+                    "select * from orders " +
+                            "join customer " +
+                            "on orders.customer_id = customer.id" +
+                            "where user_name = ?" +
+                            "order by date desc" +
+                            "limit 1")){
 
+            stmt.setString(1, userName);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                orderIdTemp = rs.getInt("id");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return orderIdTemp;
+    }
 
     public Customer getCustomer(String userName){
         Customer temp = null;
@@ -224,13 +206,11 @@ public class Repository {
                         rs.getString("password"), rs.getString("adress"),
                         getCommunity(rs.getInt("community_id")));
             }
-
         }
         catch(SQLException e){
             System.out.println("SQL exception vid select");
             e.printStackTrace();
         }
-
         return temp;
     }
 
@@ -249,7 +229,6 @@ public class Repository {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
         return temp;
     }
 
@@ -261,18 +240,19 @@ public class Repository {
 
             pstm.setInt(1,customerId);
             pstm.setInt(2, shoeId);
-            pstm.setInt(3, orderId);
+            pstm.setInt(3,orderId);
+
             ResultSet rs = pstm.executeQuery();
+            while (rs != null && rs.next()) {
+                message = rs.getString("message");
+            }
             System.out.println(rs);
         }
         catch(SQLException e){
             e.printStackTrace();
             return e.getMessage();
-
         }
-
-        return "Varan har lagts till i Ordern";
-
+        return message;
     }
 
 

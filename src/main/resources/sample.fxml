@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SplitPane?>
@@ -70,64 +69,17 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #b3cccc;">
                <children>
-                  <VBox alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="308.8" prefWidth="137.6" style="-fx-border-color: #3d5c5c;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="TOP_CENTER" layoutX="24.0" layoutY="14.0" prefHeight="308.8" prefWidth="137.6" style="-fx-border-color: #3d5c5c;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Text fx:id="firtsLastNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Namn" textAlignment="CENTER">
                            <font>
                               <Font size="17.0" />
                            </font>
                            <VBox.margin>
-                              <Insets />
+                              <Insets bottom="160.0" />
                            </VBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kategori" visible="false" wrappingWidth="93.33669471740723">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Text>
-                        <ChoiceBox prefWidth="150.0" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </ChoiceBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Märke" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Text>
-                        <ChoiceBox prefWidth="150.0" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </ChoiceBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Färg" visible="false">
-                           <VBox.margin>
-                              <Insets left="5.0" />
-                           </VBox.margin>
-                        </Text>
-                        <ChoiceBox prefWidth="150.0" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </ChoiceBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Storlek" visible="false">
-                           <VBox.margin>
-                              <Insets left="5.0" />
-                           </VBox.margin>
-                        </Text>
-                        <ChoiceBox prefWidth="150.0" visible="false">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </ChoiceBox>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="68.0" text="Sök" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin></Button>
-                        <ImageView fx:id="cartImage" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#cartAction">
+                        <ImageView fx:id="cartImage" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#cartAction">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -166,7 +118,7 @@
                            </font>
                         </Text>
                         <Button fx:id="addToCartButton" layoutX="261.0" layoutY="266.0" mnemonicParsing="false" onAction="#addToCartAction" prefHeight="25.0" prefWidth="138.0" text="Lägg till i varukorgen" textAlignment="CENTER" />
-                        <Button layoutX="83.0" layoutY="266.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Se betyg" />
+                        <Button fx:id="seeRateBtn" layoutX="83.0" layoutY="266.0" mnemonicParsing="false" onAction="#seeRateAction" prefHeight="25.0" prefWidth="125.0" text="Se betyg" />
                      </children>
                   </Pane>
                   <Pane fx:id="ratePane" layoutX="-3.0" prefHeight="307.0" prefWidth="458.0" visible="false">
@@ -184,11 +136,13 @@
                   </Pane>
                   <Pane fx:id="productAddedToCartPane" layoutX="89.0" layoutY="99.0" prefHeight="110.0" prefWidth="274.0" style="-fx-background-color: #e1eaea; -fx-border-color: #000000;" visible="false">
                      <children>
-                        <Text fx:id="addedToCartText" layoutX="10.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Din vara är tillagd i varukorgen" textAlignment="CENTER" wrappingWidth="254.3227526387786">
+                        <Text fx:id="addedToCartText" layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Din vara är tillagd i varukorgen" textAlignment="CENTER" wrappingWidth="254.3227526387786">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="15.0" />
                            </font>
                         </Text>
+                        <Button fx:id="latestOrderBtn" layoutX="25.0" layoutY="71.0" mnemonicParsing="false" onAction="#latestOrderAction" text="Senaste Ordern" visible="false" />
+                        <Button fx:id="newOrderBtn" layoutX="151.0" layoutY="71.0" mnemonicParsing="false" onAction="#newOrderAction" prefWidth="97.0" text="Ny Order" visible="false" />
                      </children>
                   </Pane>
                </children>
