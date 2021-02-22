@@ -170,19 +170,13 @@ public class Repository {
         int orderIdTemp = 0;
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                 p.getProperty("password"));
-            PreparedStatement stmt = con.prepareStatement(
-                    "select * from orders " +
-                            "join customer " +
-                            "on orders.customer_id = customer.id" +
-                            "where user_name = ?" +
-                            "order by date desc" +
-                            "limit 1")){
+            CallableStatement stmt = con.prepareCall("call getLatestOrderId(?,?)")){
 
             stmt.setString(1, userName);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                orderIdTemp = rs.getInt("id");
-            }
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.execute();
+            orderIdTemp = stmt.getInt(2);
+
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -214,7 +208,7 @@ public class Repository {
         return temp;
     }
 
-    public List<Shoe> getShoeList(){
+    public List<Shoe> getAllShoes(){
         List<Shoe> temp = new ArrayList<>();
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                 p.getProperty("password"));
@@ -232,21 +226,43 @@ public class Repository {
         return temp;
     }
 
+    public List<Shoe> getOrderedShoes(String userName){
+        List<Shoe> allShoes = getAllShoes();
+        List<Shoe> temp = new ArrayList<>();
+        int orderId = getLatestOrder(userName);
+        try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
+                p.getProperty("password"));
+            PreparedStatement pstm = con.prepareStatement("Select * from Order_includes where orders_id = ?")) {
+            pstm.setInt(1,orderId);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                for(Shoe s : allShoes){
+                    if(s.id == rs.getInt("shoe_id"))
+                        temp.add(s);
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return temp;
+
+    }
+
     public String addToCart(int customerId, int shoeId,  int orderId){
         String message = "";
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                 p.getProperty("password"));
             CallableStatement pstm = con.prepareCall("call AddToCart(?,?,?)") ) {
 
-            pstm.setInt(1,customerId);
+            pstm.setInt(1, customerId);
             pstm.setInt(2, shoeId);
-            pstm.setInt(3,orderId);
+            pstm.setInt(3, orderId);
 
             ResultSet rs = pstm.executeQuery();
             while (rs != null && rs.next()) {
                 message = rs.getString("message");
             }
-            System.out.println(rs);
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -257,6 +273,8 @@ public class Repository {
 
 
     public static void main(String[] args) {
-
+        Repository r = new Repository();
+        int test = r.getLatestOrder("MussePigg");
+        System.out.println(test);
     }
 }

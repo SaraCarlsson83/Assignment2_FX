@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -22,12 +21,14 @@ import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
-
     Repository r = new Repository();
     Customer customer = null;
     List<Button> shoeButtons = new ArrayList<>();
     int chosenButtonId = 0;
     Button chosenButton = null;
+
+    @FXML
+    public Button rateProductBtn;
 
     @FXML
     public Button seeRateBtn;
@@ -66,13 +67,13 @@ public class Controller implements Initializable {
     private Pane yourCartPane;
 
     @FXML
-    private HBox showCartBox;
-
-    @FXML
     private Pane availableShoesPane;
 
     @FXML
     private FlowPane showAvShoesBox;
+
+    @FXML
+    public FlowPane showCartPane;
 
     @FXML
     private Button addToCartButton;
@@ -90,8 +91,13 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image cartIm = new Image("cartImage.png");
         cartImage.setImage(cartIm);
+        setDisabled();
+    }
+
+    public void setDisabled(){
         addToCartButton.setDisable(true);
         seeRateBtn.setDisable(true);
+        rateProductBtn.setDisable(true);
     }
 
     @FXML
@@ -108,8 +114,8 @@ public class Controller implements Initializable {
         else {
             customer = r.getCustomer(userNameText.getText());
             firtsLastNameText.setText(customer.firstName + " " + customer.lastName);
-            List<Shoe> shoeList = r.getShoeList();
-            addShoesToView(shoeList);
+            List<Shoe> shoeList = r.getAllShoes();
+            addShoesToView(shoeList, showAvShoesBox);
             LogInPane.setVisible(false);
             chooseShoesPane.setVisible(true);
         }
@@ -117,6 +123,7 @@ public class Controller implements Initializable {
 
     @FXML
     void addToCartAction(ActionEvent event) {
+        setDisabled();
         chosenButton.setDisable(false);
         addedToCartText.setText("Vill du lägga till varan i din senaste order eller i en ny order?");
         latestOrderBtn.setVisible(true);
@@ -126,14 +133,20 @@ public class Controller implements Initializable {
 
     @FXML
     void cartAction(MouseEvent event) {
+        setDisabled();
+        List<Shoe> shoeList = r.getOrderedShoes(customer.userName);
+        addShoesToView(shoeList, showCartPane);
         availableShoesPane.setVisible(false);
         yourCartPane.setVisible(true);
     }
 
     @FXML
     public void goBackAction(ActionEvent actionEvent) {
+        showCartPane.getChildren().clear();
+        setDisabled();
         availableShoesPane.setVisible(true);
         yourCartPane.setVisible(false);
+
     }
 
     @FXML
@@ -143,6 +156,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void latestOrderAction(ActionEvent actionEvent) {
+        setDisabled();
         latestOrderBtn.setVisible(false);
         newOrderBtn.setVisible(false);
         int orderId = r.getLatestOrder(customer.userName);
@@ -151,6 +165,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void newOrderAction(ActionEvent actionEvent) {
+        setDisabled();
         latestOrderBtn.setVisible(false);
         newOrderBtn.setVisible(false);
         setOrderId(0);
@@ -160,24 +175,32 @@ public class Controller implements Initializable {
     public void seeRateAction(ActionEvent actionEvent) {
     }
 
+    @FXML
+    public void rateProductAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void logOutAction(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
     EventHandler<MouseEvent> eventHandler = new EventHandler<>() {
         @Override
         public void handle(MouseEvent e) {
             shoeButtons.forEach(i -> i.setDisable(false));
             addToCartButton.setDisable(false);
             seeRateBtn.setDisable(false);
-            System.out.println(e.getSource());
-            for (Button b : shoeButtons) {
-                if (e.getSource() == b) {
-                    b.setDisable(true);
-                    chosenButton = b;
-                    chosenButtonId = Integer.parseInt(b.getId());
-                }
-            }
+            rateProductBtn.setDisable(false);
+
+            shoeButtons.forEach(i -> {if(e.getSource()==i){
+                i.setDisable(true);
+                chosenButton = i;
+                chosenButtonId = Integer.parseInt(i.getId());
+                }});
         }
     };
 
-    public void addShoesToView(List<Shoe> shoeList){
+    public void addShoesToView(List<Shoe> shoeList, FlowPane flowPane){
         for (Shoe s: shoeList) {
             Button b = new Button();
             b.setId(String.valueOf(s.id));
@@ -186,7 +209,7 @@ public class Controller implements Initializable {
             b.setPrefSize(100,85);
             b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             shoeButtons.add(b);
-            showAvShoesBox.getChildren().add(b);
+            flowPane.getChildren().add(b);
         }
     }
 
