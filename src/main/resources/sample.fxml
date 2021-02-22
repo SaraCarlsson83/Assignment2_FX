@@ -126,14 +126,20 @@
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <FlowPane fx:id="showCartBox" layoutY="49.0" prefHeight="217.0" prefWidth="453.0" />
+                        <FlowPane fx:id="showCartBox" hgap="8.0" layoutY="49.0" prefHeight="217.0" prefWidth="453.0" vgap="8.0">
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding></FlowPane>
                         <Button fx:id="rateProductBtn" layoutX="253.0" layoutY="266.0" mnemonicParsing="false" onAction="#rateProductAction" text="Betygsätt produkt" />
                         <Button fx:id="goBackBtn" layoutX="90.0" layoutY="266.0" mnemonicParsing="false" onAction="#goBackAction" prefHeight="25.0" prefWidth="104.0" text="Gå tillbaka" />
                      </children>
                   </Pane>
                   <Pane fx:id="availableShoesPane" layoutX="-1.0" layoutY="-2.0" prefHeight="310.0" prefWidth="454.0">
                      <children>
-                        <FlowPane fx:id="showAvShoesBox" layoutY="49.0" prefHeight="217.0" prefWidth="457.0" />
+                        <FlowPane fx:id="showAvShoesBox" hgap="8.0" layoutY="49.0" prefHeight="217.0" prefWidth="457.0" vgap="8.0">
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding></FlowPane>
                         <Text layoutX="145.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Våra skor" textAlignment="CENTER" wrappingWidth="163.2421875">
                            <font>
                               <Font size="18.0" />
@@ -145,14 +151,14 @@
                   </Pane>
                   <Pane fx:id="giveRatePane" layoutX="-3.0" prefHeight="307.0" prefWidth="458.0" visible="false">
                      <children>
-                        <Text fx:id="chosenShoeText" layoutX="130.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vald sko text..." textAlignment="CENTER" wrappingWidth="196.0000122070312">
+                        <Text fx:id="chosenShoeText" layoutX="131.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vald sko text..." textAlignment="CENTER" wrappingWidth="196.0000122070312">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Text>
                         <TextArea fx:id="rateCommentText" layoutX="92.0" layoutY="142.0" prefHeight="94.0" prefWidth="274.0" promptText="Skriv din kommentar här.." />
                         <Text layoutX="92.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kommentar, max (150 tecken)" wrappingWidth="163.99999999999977" />
-                        <ComboBox fx:id="ratingBox" layoutX="154.0" layoutY="79.0" prefWidth="150.0" promptText="Välj alternativ.." />
+                        <ComboBox fx:id="ratingBox" layoutX="154.0" layoutY="91.0" prefWidth="150.0" promptText="Välj alternativ.." />
                         <Button fx:id="addRateBtn" layoutX="92.0" layoutY="255.0" mnemonicParsing="false" onAction="#addRateAction" prefHeight="25.0" prefWidth="125.0" text="Lägg till betyg" />
                         <Button layoutX="262.0" layoutY="255.0" mnemonicParsing="false" onAction="#goBackAction" prefHeight="25.0" prefWidth="104.0" text="Gå tillbaka" />
                      </children>
@@ -170,22 +176,22 @@
                   </Pane>
                   <Pane fx:id="showRatePane" prefHeight="308.8" prefWidth="455.2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text fx:id="avgRate" layoutX="171.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.5" textAlignment="CENTER" wrappingWidth="110.857421875">
+                        <Text fx:id="avgRate" layoutX="172.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.5" textAlignment="CENTER" wrappingWidth="110.857421875">
                            <font>
                               <Font size="25.0" />
                            </font>
                         </Text>
-                        <Text fx:id="chosenShoeText1" layoutX="128.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vald sko text..." textAlignment="CENTER" wrappingWidth="196.0000122070312">
+                        <Text fx:id="chosenShoeText1" layoutX="128.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vald sko text..." textAlignment="CENTER" wrappingWidth="196.0000122070312">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Text>
-                        <HBox fx:id="seeRateCommentsBox" layoutY="103.0" prefHeight="150.0" prefWidth="454.0" spacing="10.0">
+                        <HBox fx:id="seeRateCommentsBox" layoutY="118.0" prefHeight="150.0" prefWidth="454.0" spacing="10.0">
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                         </HBox>
-                        <Button layoutX="185.0" layoutY="268.0" mnemonicParsing="false" onAction="#goBackAction" prefHeight="25.0" prefWidth="93.0" text="Gå tillbaka" />
+                        <Button layoutX="181.0" layoutY="275.0" mnemonicParsing="false" onAction="#goBackAction" prefHeight="25.0" prefWidth="93.0" text="Gå tillbaka" />
                      </children>
                   </Pane>
                </children>

@@ -123,7 +123,7 @@ public class Controller implements Initializable {
         Image cartIm = new Image("cartImage.png");
         cartImage.setImage(cartIm);
         setDisabled();
-        ratingBox.getItems().addAll(r.getCategoryNames());
+        ratingBox.getItems().addAll(r.getRatingStrings());
     }
 
     public void setDisabled(){
@@ -144,12 +144,13 @@ public class Controller implements Initializable {
         else if (!password)
             wrongPassword.setVisible(true);
         else {
+            clearAllPanes();
             customer = r.getCustomer(userNameText.getText());
             firtsLastNameText.setText(customer.firstName + " " + customer.lastName);
             List<Shoe> shoeList = r.getAllShoes();
             addShoesToView(shoeList, showAvShoesBox);
-            LogInPane.setVisible(false);
             chooseShoesPane.setVisible(true);
+            availableShoesPane.setVisible(true);
         }
     }
 
@@ -165,20 +166,19 @@ public class Controller implements Initializable {
 
     @FXML
     void cartAction(MouseEvent event) {
+        clearAllPanes();
         setDisabled();
         List<Shoe> shoeList = r.getOrderedShoes(customer.userName);
         addShoesToView(shoeList, showCartBox);
-        availableShoesPane.setVisible(false);
         yourCartPane.setVisible(true);
     }
 
     @FXML
     public void goBackAction(ActionEvent actionEvent) {
+        clearAllPanes();
         showCartBox.getChildren().clear();
         setDisabled();
         availableShoesPane.setVisible(true);
-        yourCartPane.setVisible(false);
-        giveRatePane.setVisible(false);
     }
 
     @FXML
@@ -212,8 +212,8 @@ public class Controller implements Initializable {
 
     @FXML
     public void rateProductAction(ActionEvent actionEvent) {
+        clearAllPanes();
         giveRatePane.setVisible(true);
-        yourCartPane.setVisible(false);
         chosenShoeText.setText(chosenButton.getText());
     }
 
@@ -259,6 +259,16 @@ public class Controller implements Initializable {
         productAddedToCartPane.setVisible(true);
         pause.setOnFinished(e -> productAddedToCartPane.setVisible(false));
         pause.play();
+    }
+
+    public void clearAllPanes(){
+        showRatePane.setVisible(false);
+        giveRatePane.setVisible(false);
+        LogInPane.setVisible(false);
+        yourCartPane.setVisible(false);
+        availableShoesPane.setVisible(false);
+        productAddedToCartPane.setVisible(false);
+
     }
 
 }
