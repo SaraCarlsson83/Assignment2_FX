@@ -2,20 +2,24 @@ package sample;
 
 public class Community {
 
-    protected int ind;
+    protected int id;
     protected String communityName;
 
-    public Community(int ind, String communityName) {
-        this.ind = ind;
+    public Community(int id, String communityName) {
+        this.id = id;
         this.communityName = communityName;
     }
 
-    public int getInd() {
-        return ind;
+    public Community() {
+
     }
 
-    public void setInd(int ind) {
-        this.ind = ind;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCommunityName() {
