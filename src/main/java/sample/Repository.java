@@ -236,6 +236,12 @@ public class Repository {
         return temp;
     }
 
+    public List<String> getCategoryNames(){
+        List<String> temp = new ArrayList<>();
+        categories.forEach(e -> temp.add(e.categoryName));
+        return temp;
+    }
+
     public int getLatestOrder(String userName){
         int orderIdTemp = 0;
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),

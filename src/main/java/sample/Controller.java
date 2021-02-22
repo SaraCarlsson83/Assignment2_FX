@@ -123,6 +123,7 @@ public class Controller implements Initializable {
         Image cartIm = new Image("cartImage.png");
         cartImage.setImage(cartIm);
         setDisabled();
+        ratingBox.getItems().addAll(r.getCategoryNames());
     }
 
     public void setDisabled(){
