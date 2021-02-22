@@ -76,14 +76,24 @@
                               <Font size="17.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="160.0" />
+                              <Insets bottom="20.0" />
                            </VBox.margin>
                         </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kategori" />
+                        <ChoiceBox prefWidth="150.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin></ChoiceBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Färg" />
                         <ChoiceBox prefWidth="150.0" />
-                        <ChoiceBox prefWidth="150.0" />
+                        <Button mnemonicParsing="false" text="Sök">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
                         <ImageView fx:id="cartImage" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#cartAction">
                            <VBox.margin>
-                              <Insets bottom="15.0" />
+                              <Insets bottom="10.0" top="15.0" />
                            </VBox.margin>
                         </ImageView>
                         <Button mnemonicParsing="false" onAction="#logOutAction" text="Logga ut" />
