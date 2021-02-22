@@ -17,7 +17,7 @@ public class Repository_Ivona {
     public Repository_Ivona() {
 
         try {
-            p.load(new FileInputStream("src/Övningar/Settings"));
+            p.load(new FileInputStream("src/main/java/sample/settings.properties"));
             //Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (IOException e) {
             e.printStackTrace();

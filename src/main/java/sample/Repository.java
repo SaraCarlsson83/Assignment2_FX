@@ -176,7 +176,7 @@ public class Repository {
     public Community getCommunity(int id){
         Community temp = null;
         for (Community c : communities) {
-            if(c.ind == id){
+            if(c.id == id){
                 temp = c;
             }
         }
@@ -224,6 +224,7 @@ public class Repository {
     }
 
     public Name getName(int id){
+        //return names.stream().filter(e -> e.getId()==id).collect();
         Name temp = null;
         for (Name l : names){
             if(l.id == id){
