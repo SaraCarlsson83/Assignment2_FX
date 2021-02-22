@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Repository {
 
@@ -16,6 +17,7 @@ public class Repository {
     List<Price> prices = new ArrayList<>();
     List<Size> sizes = new ArrayList<>();
     List<Name> names = new ArrayList<>();
+    List<Category> categories = new ArrayList<>();
 
     public Repository(){
         try {
@@ -30,7 +32,8 @@ public class Repository {
             PreparedStatement color_stmt = con.prepareStatement("select * from color");
             PreparedStatement price_stmt = con.prepareStatement("select * from price");
             PreparedStatement size_stmt = con.prepareStatement("select * from size");
-            PreparedStatement name_stmt = con.prepareStatement("select * from name");) {
+            PreparedStatement name_stmt = con.prepareStatement("select * from name");
+            PreparedStatement category_stmt = con.prepareStatement("select * from category")) {
 
             ResultSet rs = community_stmt.executeQuery();
             while(rs.next()){
@@ -56,12 +59,77 @@ public class Repository {
             while(rs.next()){
                 names.add(new Name(rs.getInt("id"), rs.getString("shoe_name")));
             }
-
+            rs = category_stmt.executeQuery();
+            while (rs.next()){
+                categories.add(new Category(rs.getInt("id"), rs.getString("cat_name")));
+            }
         }
         catch(SQLException e){
-
+            e.printStackTrace();
         }
+    }
 
+    public List<Shoe> getCategoryandColor(String category, String color){
+        List<Shoe> temp = new ArrayList<>();
+        if(category.equals("Alla") && color.equals("Alla"))
+            return getAllShoes();
+            try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
+                    p.getProperty("password"));
+                PreparedStatement stmt1 = con.prepareStatement(
+                        "select * from shoe " +
+                            "join divide_into_category " +
+                            "on shoe.id = divide_into_category.Shoe_id " +
+                            "join category " +
+                            "on category.id = divide_into_category.category_id " +
+                            "join shoe_color " +
+                            "on shoe_color.Shoe_id = shoe.id " +
+                            "join color " +
+                            "on color.id = shoe_color.color_id " +
+                            "where category.cat_name = ? and color.col_name = ? ");
+                PreparedStatement stmt2 = con.prepareStatement(
+                        "select * from shoe " +
+                            "join divide_into_category " +
+                            "on shoe.id = divide_into_category.Shoe_id " +
+                            "join category " +
+                            "on category.id = divide_into_category.category_id " +
+                            "where category.cat_name = ?");
+                PreparedStatement stmt3 = con.prepareStatement(
+                        "select * from shoe " +
+                            "join shoe_color " +
+                            "on shoe_color.Shoe_id = shoe.id " +
+                            "join color " +
+                            "on color.id = shoe_color.color_id " +
+                            " where color.col_name = ?")){
+
+                ResultSet rs = null;
+
+                if(!category.equals("Alla") && !color.equals("Alla")) {
+                    stmt1.setString(1, category);
+                    stmt1.setString(2, color);
+                    rs = stmt1.executeQuery();
+
+                }
+                else if(!category.equals("Alla")) {
+                    stmt2.setString(1, category);
+                    rs = stmt2.executeQuery();
+                }
+                else {
+                    stmt3.setString(1, color);
+                    rs = stmt3.executeQuery();
+                }
+
+                while(rs!=null && rs.next()){
+                    temp.add(new Shoe(rs.getInt("id"), getLabel(rs.getInt("label_id")),
+                            getPrice(rs.getInt("price_id")), getName(rs.getInt("name_Id")),
+                            getSize(rs.getInt("size_id")), rs.getInt("shoe_stock")));
+                }
+                return temp;
+
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+
+        return temp;
     }
 
 
@@ -69,14 +137,12 @@ public class Repository {
         boolean temp = false;
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                         p.getProperty("password"));
-            PreparedStatement stmt = con.prepareStatement("select user_name from customer");){
-
+            PreparedStatement stmt = con.prepareStatement("select * from customer where user_name = ?");){
+            stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                String tempName = rs.getString("user_name");
-                if ( tempName.equalsIgnoreCase(name))
+            String tempName = rs.getString("user_name");
+                if (tempName.equalsIgnoreCase(name))
                     temp = true;
-            }
         }
         catch (SQLException e ){
             System.out.println("SQL exception connection till databas");
@@ -90,8 +156,10 @@ public class Repository {
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
                 p.getProperty("password"));
             PreparedStatement stmt = con.prepareStatement("select * from customer where user_name = ?")){
+
             stmt.setString(1,name);
             ResultSet rs = stmt.executeQuery();
+
             while(rs.next()) {
                 String tempPassword = rs.getString("Password");
                 System.out.println(tempPassword);
@@ -99,7 +167,6 @@ public class Repository {
                 if(tempPassword.equals(password))
                     temp = true;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -176,7 +243,6 @@ public class Repository {
             stmt.registerOutParameter(2, Types.INTEGER);
             stmt.execute();
             orderIdTemp = stmt.getInt(2);
-
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -246,7 +312,6 @@ public class Repository {
             e.printStackTrace();
         }
         return temp;
-
     }
 
     public String addToCart(int customerId, int shoeId,  int orderId){
@@ -276,5 +341,8 @@ public class Repository {
         Repository r = new Repository();
         int test = r.getLatestOrder("MussePigg");
         System.out.println(test);
+
+        List<Shoe> shoeList = r.getCategoryandColor("Sandals", "Black");
+        shoeList.forEach(e -> System.out.println(e.labelId.getLabelName()));
     }
 }
