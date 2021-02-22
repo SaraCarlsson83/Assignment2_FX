@@ -3,13 +3,13 @@ package sample;
 public class Divide_into_category {
 
     protected int id;
-    protected Shoe shoeId;
-    protected Category categoryId;
+    protected Shoe shoe;
+    protected Category category;
 
-    public Divide_into_category(int id, Shoe shoeId, Category categoryId) {
+    public Divide_into_category(int id, Shoe shoe, Category category) {
         this.id = id;
-        this.shoeId = shoeId;
-        this.categoryId = categoryId;
+        this.shoe = shoe;
+        this.category = category;
     }
 
     public int getId() {
@@ -20,19 +20,19 @@ public class Divide_into_category {
         this.id = id;
     }
 
-    public Shoe getShoeId() {
-        return shoeId;
+    public Shoe getShoe() {
+        return shoe;
     }
 
-    public void setShoeId(Shoe shoeId) {
-        this.shoeId = shoeId;
+    public void setShoe(Shoe shoe) {
+        this.shoe = shoe;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
