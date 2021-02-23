@@ -89,9 +89,9 @@ public class Repository_Ivona {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Could not add rating to database";
+            return "Kunde inte lägga till betyget";
         }
-        return comment + " was added to database";
+        return "Betyget har läggt till";
 
     }
 

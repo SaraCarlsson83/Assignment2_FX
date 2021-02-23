@@ -109,7 +109,7 @@ public class Repository {
     public Community getCommunity(int id){
         Community temp = null;
         for (Community c : communities) {
-            if(c.ind == id){
+            if(c.id == id){
                 temp = c;
             }
         }
