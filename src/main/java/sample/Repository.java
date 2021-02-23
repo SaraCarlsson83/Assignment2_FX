@@ -22,7 +22,8 @@ public class Repository {
     public Repository(){
         try {
             p.load(new FileInputStream("src/main/java/sample/settings.properties"));
-        } catch (IOException e) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
@@ -140,9 +141,12 @@ public class Repository {
             PreparedStatement stmt = con.prepareStatement("select * from customer where user_name = ?");){
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
-            String tempName = rs.getString("user_name");
+            while(rs.next()){
+                String tempName = rs.getString("user_name");
                 if (tempName.equalsIgnoreCase(name))
                     temp = true;
+            }
+
         }
         catch (SQLException e ){
             System.out.println("SQL exception connection till databas");
@@ -343,6 +347,6 @@ public class Repository {
         System.out.println(test);
 
         List<Shoe> shoeList = r.getCategoryandColor("Sandals", "Black");
-        shoeList.forEach(e -> System.out.println(e.labelId.getLabelName()));
+        shoeList.forEach(e -> System.out.println(e.label.getLabelName()));
     }
 }

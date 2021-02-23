@@ -18,8 +18,8 @@ public class Repository_Ivona {
 
         try {
             p.load(new FileInputStream("src/main/java/sample/settings.properties"));
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (IOException e) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -89,9 +89,9 @@ public class Repository_Ivona {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Kunde inte lägga till betyget";
+            return "Kunde inte läggas till betyget";
         }
-        return "Betyget har läggt till";
+        return "Betyget har lagts till";
 
     }
 

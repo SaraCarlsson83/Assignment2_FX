@@ -12,12 +12,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample.fxml"));
-
-        FXMLLoader loader = new FXMLLoader(new File("C:\\Users\\krist\\Documents\\IVONA\\PROGRAMUTVECKLARE JAVA\\Databasteknik\\Assignment2_FX\\src\\main\\resources\\sample.fxml").toURI().toURL());
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
     }
 
 
