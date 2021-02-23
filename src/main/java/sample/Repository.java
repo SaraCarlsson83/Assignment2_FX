@@ -355,8 +355,5 @@ public class Repository {
         Repository r = new Repository();
         int test = r.getLatestOrder("MussePigg");
         System.out.println(test);
-
-        List<Shoe> shoeList = r.getCategoryandColor("Sandals", "Black");
-        shoeList.forEach(e -> System.out.println(e.labelId.getLabelName()));
     }
 }

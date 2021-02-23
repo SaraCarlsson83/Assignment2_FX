@@ -12,10 +12,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,7 +37,7 @@ public class Controller implements Initializable {
     private Pane showRatePane;
 
     @FXML
-    private HBox seeRateCommentsBox;
+    private VBox seeRateCommentsBox;
 
     @FXML
     private Text avgRate;
@@ -178,12 +180,26 @@ public class Controller implements Initializable {
         clearAllPanes();
         showCartBox.getChildren().clear();
         setDisabled();
+        seeRateCommentsBox.getChildren().clear();
+        if(chosenButton!=null)
+            chosenButton.setDisable(false);
         availableShoesPane.setVisible(true);
     }
 
     @FXML
     public void addRateAction(ActionEvent actionEvent) {
-       // ri.addRatingToDatabase(new Rating());
+        String answer = ri.setRating(rateCommentText.getText(), ratingBox.getSelectionModel().getSelectedItem(),
+               chosenButtonId, customer.id);
+        setDisabled();
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        addedToCartText.setText(answer);
+        newOrderBtn.setVisible(false);
+        latestOrderBtn.setVisible(false);
+        productAddedToCartPane.setVisible(true);
+        pause.setOnFinished(e -> productAddedToCartPane.setVisible(false));
+        pause.play();
+        chosenButton.setDisable(false);
+        addRateBtn.setDisable(true);
     }
 
     @FXML
@@ -205,9 +221,15 @@ public class Controller implements Initializable {
 
     @FXML
     public void seeRateAction(ActionEvent actionEvent) {
-        //Double avgRate = ri.getAverageRating(chosenButtonId);
-       // List<String> commentsList =
-
+        setDisabled();
+        clearAllPanes();
+        double rate = ri.getAverageRating(chosenButtonId);
+        List<String> commentsList = ri.getComments(chosenButtonId);
+        DecimalFormat df = new DecimalFormat("#.0");
+        avgRate.setText(String.valueOf(df.format(rate)));
+        chosenShoeText1.setText(chosenButton.getText());
+        commentsList.forEach(e -> seeRateCommentsBox.getChildren().add(new Text("\"" + e + "\"")));
+        showRatePane.setVisible(true);
     }
 
     @FXML
