@@ -243,8 +243,8 @@ public class Controller implements Initializable {
         for (Shoe s: shoeList) {
             Button b = new Button();
             b.setId(String.valueOf(s.id));
-            b.setText(s.labelId.getLabelName() + " \n" + s.nameId.getShoeName() + "\n" +
-                    s.priceId.getValue() + "kr\n" + "Storlek " + s.sizeId.getSizeName()+ "\n" );
+            b.setText(s.label.getLabelName() + " \n" + s.name.getShoeName() + "\n" +
+                    s.price.getValue() + "kr\n" + "Storlek " + s.size.getSizeName()+ "\n" );
             b.setPrefSize(100,85);
             b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             shoeButtons.add(b);

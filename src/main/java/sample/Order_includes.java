@@ -3,13 +3,13 @@ package sample;
 public class Order_includes {
 
     protected int id;
-    protected Orders ordersId;
-    protected Shoe shoeId;
+    protected Orders order;
+    protected Shoe shoe;
 
-    public Order_includes(int id, Orders ordersId, Shoe shoeId) {
+    public Order_includes(int id, Orders order, Shoe shoe) {
         this.id = id;
-        this.ordersId = ordersId;
-        this.shoeId = shoeId;
+        this.order = order;
+        this.shoe = shoe;
     }
 
     public int getId() {
@@ -20,19 +20,19 @@ public class Order_includes {
         this.id = id;
     }
 
-    public Orders getOrdersId() {
-        return ordersId;
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrdersId(Orders ordersId) {
-        this.ordersId = ordersId;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 
-    public Shoe getShoeId() {
-        return shoeId;
+    public Shoe getShoe() {
+        return shoe;
     }
 
-    public void setShoeId(Shoe shoeId) {
-        this.shoeId = shoeId;
+    public void setShoe(Shoe shoe) {
+        this.shoe = shoe;
     }
 }

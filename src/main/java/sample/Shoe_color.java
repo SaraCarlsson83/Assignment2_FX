@@ -3,13 +3,13 @@ package sample;
 public class Shoe_color {
 
     protected int id;
-    protected Shoe shoeId;
-    protected Color colorId;
+    protected Shoe shoe;
+    protected Color color;
 
-    public Shoe_color(int id, Shoe shoeId, Color colorId) {
+    public Shoe_color(int id, Shoe shoe, Color color) {
         this.id = id;
-        this.shoeId = shoeId;
-        this.colorId = colorId;
+        this.shoe = shoe;
+        this.color = color;
     }
 
     public int getId() {
@@ -20,19 +20,19 @@ public class Shoe_color {
         this.id = id;
     }
 
-    public Shoe getShoeId() {
-        return shoeId;
+    public Shoe getShoe() {
+        return shoe;
     }
 
-    public void setShoeId(Shoe shoeId) {
-        this.shoeId = shoeId;
+    public void setShoe(Shoe shoe) {
+        this.shoe = shoe;
     }
 
-    public Color getColorId() {
-        return colorId;
+    public Color getColor() {
+        return color;
     }
 
-    public void setColorId(Color colorId) {
-        this.colorId = colorId;
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
