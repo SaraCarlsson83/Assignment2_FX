@@ -89,9 +89,9 @@ public class Repository_Ivona {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Kunde inte läggas till betyget";
+            return "Det gick inte att lägga till betyget";
         }
-        return "Betyget har lagts till";
+        return "Betyget har lagts till i dtabasen";
 
     }
 

@@ -18,12 +18,12 @@ public class Repository {
     List<Size> sizes = new ArrayList<>();
     List<Name> names = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
+    List<Rating_alternatives> rating_alternatives = new ArrayList<>();
 
     public Repository(){
         try {
             p.load(new FileInputStream("src/main/java/sample/settings.properties"));
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"), p.getProperty("name"),
@@ -34,7 +34,8 @@ public class Repository {
             PreparedStatement price_stmt = con.prepareStatement("select * from price");
             PreparedStatement size_stmt = con.prepareStatement("select * from size");
             PreparedStatement name_stmt = con.prepareStatement("select * from name");
-            PreparedStatement category_stmt = con.prepareStatement("select * from category")) {
+            PreparedStatement category_stmt = con.prepareStatement("select * from category");
+            PreparedStatement ratingAlt_stmt = con.prepareStatement("select * from rating_alternatives")) {
 
             ResultSet rs = community_stmt.executeQuery();
             while(rs.next()){
@@ -63,6 +64,11 @@ public class Repository {
             rs = category_stmt.executeQuery();
             while (rs.next()){
                 categories.add(new Category(rs.getInt("id"), rs.getString("cat_name")));
+            }
+            rs = ratingAlt_stmt.executeQuery();
+            while(rs.next()){
+                rating_alternatives.add(new Rating_alternatives(rs.getInt("id"), rs.getString("options"),
+                        rs.getInt("rating_numbers")));
             }
         }
         catch(SQLException e){
@@ -141,12 +147,11 @@ public class Repository {
             PreparedStatement stmt = con.prepareStatement("select * from customer where user_name = ?");){
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
+            while(rs.next()) {
                 String tempName = rs.getString("user_name");
                 if (tempName.equalsIgnoreCase(name))
                     temp = true;
             }
-
         }
         catch (SQLException e ){
             System.out.println("SQL exception connection till databas");
@@ -166,8 +171,6 @@ public class Repository {
 
             while(rs.next()) {
                 String tempPassword = rs.getString("Password");
-                System.out.println(tempPassword);
-                System.out.println(password);
                 if(tempPassword.equals(password))
                     temp = true;
             }
@@ -228,12 +231,19 @@ public class Repository {
     }
 
     public Name getName(int id){
+        //return names.stream().filter(e -> e.getId()==id).collect();
         Name temp = null;
         for (Name l : names){
             if(l.id == id){
                 temp = l;
             }
         }
+        return temp;
+    }
+
+    public List<String> getRatingStrings(){
+        List<String> temp = new ArrayList<>();
+        rating_alternatives.forEach(e -> temp.add(e.options));
         return temp;
     }
 
@@ -345,8 +355,5 @@ public class Repository {
         Repository r = new Repository();
         int test = r.getLatestOrder("MussePigg");
         System.out.println(test);
-
-        List<Shoe> shoeList = r.getCategoryandColor("Sandals", "Black");
-        shoeList.forEach(e -> System.out.println(e.label.getLabelName()));
     }
 }
