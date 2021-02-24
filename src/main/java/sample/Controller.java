@@ -168,6 +168,9 @@ public class Controller implements Initializable {
 
     @FXML
     void cartAction(MouseEvent event) {
+        rateCommentText.clear();
+        showCartBox.getChildren().clear();
+        addRateBtn.setDisable(false);
         clearAllPanes();
         setDisabled();
         List<Shoe> shoeList = r.getOrderedShoes(customer.userName);
@@ -184,6 +187,7 @@ public class Controller implements Initializable {
         if(chosenButton!=null)
             chosenButton.setDisable(false);
         availableShoesPane.setVisible(true);
+        addRateBtn.setDisable(false);
     }
 
     @FXML
@@ -200,6 +204,7 @@ public class Controller implements Initializable {
         pause.play();
         chosenButton.setDisable(false);
         addRateBtn.setDisable(true);
+        rateCommentText.clear();
     }
 
     @FXML
